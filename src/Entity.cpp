@@ -111,7 +111,7 @@ int Tank::getid() const { return this->id; }
  * @return: a pointer to the newly created Bullet object
  */
 Bullet* Tank::shot() {
-    auto bullet_p = new Bullet(this->probex(2), this->probey(2),
+    auto bullet_p = new Bullet(this->probex(), this->probey(),
                                this->getFace(), this->getid());
     return bullet_p;
 }
@@ -189,7 +189,7 @@ void shot_all(const std::vector<Tank*>& Tanks_p,
     // std::cout << "check right before shot_all: " << Bullets_p.size()
     //           << std::endl;
     for (auto tank_p : Tanks_p) {
-        if (tank_p->Entity::inField(2)) {
+        if (tank_p->Entity::inField()) {
             Bullets_p.push_back(tank_p->shot());
         }
     }

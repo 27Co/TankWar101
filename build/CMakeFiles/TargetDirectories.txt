@@ -1,3 +1,0 @@
-/home/bumblebee/27Co/TankWar/build/CMakeFiles/tankwar.dir
-/home/bumblebee/27Co/TankWar/build/CMakeFiles/edit_cache.dir
-/home/bumblebee/27Co/TankWar/build/CMakeFiles/rebuild_cache.dir
