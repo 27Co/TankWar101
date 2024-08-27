@@ -193,14 +193,11 @@ std::string get_directions(Game game, int mode) {
                       << "tank" << NOCOLOR << std::endl;
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cin >> directions[0];
-            // directions = AI(game, directions[0]);
             directions[1] = oneAI(game, 1);
             std::cout << "AI's choice: " << std::endl
                       << directions[1] << std::endl;
             break;
         case 2:
-            // directions[0] = firstAI(game);
-            // directions = AI(game, directions[0]);
             for (int i = 0; i < TANK_NUM; i++) {
                 std::cout << "Enter a direction for " << tankColors[i]
                           << "tank " << game.Tanks_p[i]->getid() << NOCOLOR
@@ -250,3 +247,4 @@ int turn_all(Game game, std::string directions, std::ofstream& fout) {
     }
     return 0;
 }
+

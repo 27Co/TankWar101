@@ -1,0 +1,1 @@
+/usr/bin/c++ -Werror -Wpedantic -Wall -Wextra -Wvla -Wno-unused-result -Wconversion CMakeFiles/tankwar.dir/src/main.cpp.o CMakeFiles/tankwar.dir/src/terminal.cpp.o CMakeFiles/tankwar.dir/src/Entity.cpp.o CMakeFiles/tankwar.dir/src/Field.cpp.o CMakeFiles/tankwar.dir/src/AI.cpp.o -o tankwar

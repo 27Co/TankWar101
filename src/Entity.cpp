@@ -15,7 +15,7 @@ int Entity::gety() const { return this->y; }
 
 /**
  * @brief: change the coordinates of the tank/bullet according to its face
- * @param speed: number of tile to move per round
+ * @param step: number of tile to move per round
  */
 void Entity::move(int step) {
     this->x += dx[static_cast<int>(face)] * step;
@@ -49,9 +49,6 @@ int Entity::probey(int step, Direction direction) const {
         (newFace_int < 0) ? (newFace_int + 4) : (newFace_int % 4));
     return this->y + dy[static_cast<int>(newFace_temp)] * step;
 };
-// int Entity::probey(int step) const {
-//     return this->y + dy[static_cast<int>(this->face)] * step;
-// };
 
 Face Entity::getFace() const { return this->face; }
 
@@ -110,8 +107,8 @@ int Tank::gethp() const { return this->hp; }
 int Tank::getid() const { return this->id; }
 
 /**
- * @brief: shot a bullet
- * @return a pointer to the newly created Bullet object
+ * @brief: make a shot
+ * @return: a pointer to the newly created Bullet object
  */
 Bullet* Tank::shot() {
     auto bullet_p = new Bullet(this->probex(2), this->probey(2),
@@ -161,16 +158,13 @@ void delete_tanks(std::vector<Tank*>& Tanks_p) {
  */
 void move_all(const std::vector<Tank*>& Tanks_p,
               std::vector<Bullet*>& Bullets_p) {
-    // std::cout << "the beginning of move_all" << std::endl;
     for (auto tank_p : Tanks_p) {
         if (tank_p->Entity::inField(1)) {
             tank_p->Entity::move(1);
         }
     }
-    // std::cout << "in move_all: after first for loop" << std::endl;
     for (auto& bullet_p : Bullets_p) {
         if (bullet_p->Entity::inField(2)) {
-            // std::cout << "is in field" << std::endl;
             bullet_p->Entity::move(2);
         } else {
             delete bullet_p;
@@ -181,7 +175,6 @@ void move_all(const std::vector<Tank*>& Tanks_p,
     for (size_t i = 0, size = Bullets_p.size(); i < size; i++) {
         auto it = std::find(Bullets_p.begin(), Bullets_p.end(), nullptr);
         if (it != Bullets_p.end()) {
-            // std::cout << "removed" << std::endl;
             Bullets_p.erase(it);
         }
     }
@@ -203,14 +196,13 @@ void shot_all(const std::vector<Tank*>& Tanks_p,
 }
 
 /**
- * @brief: deduct hp due to collisions (tank&tank and Tank&bullet)
+ * @brief: deduct hp due to collisions (tank & tank and Tank & bullet)
  * @param Tanks_p, Bullets_p: vectors containing pointers to tanks and bullets
  * @param fout: log file handler
  * @return true if a tank is destroyed by collision
  */
 bool check_collision(std::vector<Tank*>& Tanks_p,
                      std::vector<Bullet*>& Bullets_p, std::ofstream& fout) {
-    // return true if the tanks collide, end of game
     for (size_t i = 0; i < TANK_NUM; i++) {
         for (size_t j = i + 1; j < TANK_NUM; j++) {
             bool oneStep_t =
@@ -251,7 +243,6 @@ bool check_collision(std::vector<Tank*>& Tanks_p,
                 bullet_p->Entity::probex(2) == tank_p->Entity::probex() &&
                 bullet_p->Entity::probey(2) == tank_p->Entity::probey();
             if (oneStep_b || twoStep_b || threeStep_b) {
-                // std::cout << "tank hit by bullet" << std::endl;
                 fout << "tank hit by bullet, hp -2" << std::endl;
                 tank_p->deduct(2);
                 delete bullet_p;
@@ -289,8 +280,6 @@ bool check_gas(const std::vector<Tank*>& Tanks_p, int round,
     int gasWidth = INITIAL_GAS_WIDTH + round / SHRINK_RATE;
     bool tf = false;
     for (auto& tank_p : Tanks_p) {
-        // current: check before move
-        // if after, use probe()
         if (tank_p->Entity::getx() < gasWidth ||
             tank_p->Entity::getx() >= FIELD_SIZE_DISPLAY - gasWidth ||
             tank_p->Entity::gety() < gasWidth ||
@@ -455,3 +444,4 @@ void print_winner(const IDs& winnerID, int mode) {
     }
     std::cout << std::endl;
 }
+
