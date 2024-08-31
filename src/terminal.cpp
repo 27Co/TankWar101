@@ -247,4 +247,3 @@ int turn_all(Game game, std::string directions, std::ofstream& fout) {
     }
     return 0;
 }
-
