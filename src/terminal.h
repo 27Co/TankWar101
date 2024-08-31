@@ -39,4 +39,8 @@ std::string get_directions(Game game, int mode);
 
 int turn_all(Game game, std::string directions, std::ofstream& fout);
 
+void new_buffer();
+void restore_buffer();
+void clear_screen();
+
 #endif  // TERMINAL_H

@@ -99,7 +99,7 @@ int print_intro(bool isDEMO) {
                   << "AIs will NOT keep moving forward. Just wait and see :)"
                   << std::endl;
     } else {
-        std::cout << std::endl << "Tank control:" << std::endl;
+        std::cout << "Tank control:" << std::endl;
         std::cout << "In each turn, a tank can move left (a), right "
                      "(d) or forward (w)"
                   << std::endl;
@@ -126,7 +126,8 @@ int print_intro(bool isDEMO) {
  * @return 0 if the game continues; 1 if the game ends; -1 if players quit
  */
 int loop(Game& game, std::ofstream& fout, int mode) {
-    std::cout << std::endl << "Round " << game.round << std::endl;
+    clear_screen();
+    std::cout << "Round " << game.round << std::endl;
     fout << "Round " << game.round << std::endl;
 
     update_field(game.field, get_XYZ(game.Tanks_p), get_XYZ(game.Bullets_p),
@@ -247,3 +248,9 @@ int turn_all(Game game, std::string directions, std::ofstream& fout) {
     }
     return 0;
 }
+
+void new_buffer() { std::cout << "\033[?1049h" << std::flush; }
+
+void restore_buffer() { std::cout << "\033[?1049l" << std::flush; }
+
+void clear_screen() { std::cout << "\033[2J\033[1;1H" << std::flush; }

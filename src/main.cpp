@@ -11,7 +11,10 @@ int main(int argc, char* argv[]) {
     std::ofstream fout;
     fout.open(fileName);
 
+    new_buffer();
+    clear_screen();
     if (print_intro(mode == 2) == 1) {
+        std::cout << "\033[?1049l" << std::flush;
         return 0;
     }
 
@@ -49,6 +52,9 @@ int main(int argc, char* argv[]) {
     fout << "tanks deleted" << std::endl;
     fout.close();
     std::cout << "Done. See you next time!" << std::endl;
+    std::cout << "Exit in 3 second" << std::flush;
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+    restore_buffer();
 
     return 0;
 }
