@@ -4,7 +4,7 @@ int main(int argc, char* argv[]) {
     int initialHP = 5;
     int mode = 0;
     std::string fileName = "tankwar.log";
-    if (set_opts(initialHP, mode, fileName, argc, argv) != 0) {
+    if (set_opts(mode, fileName, argc, argv) != 0) {
         return 0;
     }
 

@@ -3,10 +3,9 @@
 /**
  * @brief: handle command line arguments
  */
-int set_opts(int& initialHP, int& mode, std::string& fileName, int argc,
-             char** argv) {
+int set_opts(int& mode, std::string& fileName, int argc, char** argv) {
     int opt;
-    while ((opt = getopt_long(argc, argv, "hl:m:p:", longOptions, nullptr)) !=
+    while ((opt = getopt_long(argc, argv, "hl:m:", longOptions, nullptr)) !=
            -1) {
         switch (opt) {
             case 'h': {
@@ -28,32 +27,15 @@ int set_opts(int& initialHP, int& mode, std::string& fileName, int argc,
                 break;
             }
             case 'm': {
-                if (strcmp(optarg, "PVP") == 0) {
-                    std::cout << "You have chosen PVP mode" << std::endl;
-                    mode = 0;
-                } else if (strcmp(optarg, "PVE") == 0) {
+                if (strcmp(optarg, "PVE") == 0) {
                     std::cout << "You have chosen PVE mode" << std::endl;
-                    mode = 1;
+                    mode = 0;
                 } else if (strcmp(optarg, "DEMO") == 0) {
                     std::cout << "You have chosen DEMO mode" << std::endl;
-                    mode = 2;
+                    mode = 1;
                 } else {
-                    std::cout << "Invalid mode name, game mode was set to PVP "
+                    std::cout << "Invalid mode name, game mode was set to PVE "
                                  "by default"
-                              << std::endl;
-                }
-                break;
-            }
-            case 'p': {
-                if (optarg[0] >= '1' && optarg[0] <= '9') {
-                    initialHP = std::stoi(optarg);
-                    std::cout << "Initial hp successfully set to " << initialHP
-                              << std::endl;
-                } else {
-                    std::cout << "Initial hp setup failed: hp should be a "
-                                 "positive integer"
-                              << std::endl;
-                    std::cout << "Initial hp was set to 5 by defult"
                               << std::endl;
                 }
                 break;
@@ -108,11 +90,10 @@ int print_intro(bool isDEMO) {
                   << std::endl;
     }
 
-    char temp;
+    int temp;
     std::cout << std::endl;
     std::cout << "Enter q to quit, any other character to continue: ";
-    std::cin >> temp;
-    if (temp == 'q') {
+    if ((temp = getchar()) == 'q') {
         return 1;
     }
     return 0;

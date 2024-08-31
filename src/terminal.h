@@ -25,8 +25,7 @@ const struct option longOptions[] = {
     {"initial-life", required_argument, nullptr, 'p'},
     {nullptr, 0, nullptr, 0}};
 
-int set_opts(int& initialHP, int& mode, std::string& fileName, int argc,
-             char** argv);
+int set_opts(int& mode, std::string& fileName, int argc, char** argv);
 }
 
 void print_help(const std::string& argv);
