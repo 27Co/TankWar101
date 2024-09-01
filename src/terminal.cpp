@@ -85,7 +85,6 @@ int print_intro(bool isDEMO) {
         std::cout << "In each turn, a tank can move left (a), right "
                      "(d) or forward (w)"
                   << std::endl;
-        std::cout << "You can exit the game by entering q" << std::endl;
         std::cout << "Any other input will be treated as w (forward)"
                   << std::endl;
     }
