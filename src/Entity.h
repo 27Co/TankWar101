@@ -1,63 +1,61 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include <algorithm>
 #include <fstream>
-#include <iostream>
 #include <vector>
 
 #include "Global.h"
 
-const std::array<int, 4> dx = {1, 0, -1, 0};
-const std::array<int, 4> dy = {0, 1, 0, -1};
+const std::array<int, 5> dx = {1, 0, -1, 0, 0};
+const std::array<int, 5> dy = {0, 1, 0, -1, 0};
 class Entity {
    private:
-    int x, y;
-    Face face;
+    size_t x, y;
+    Direction face;
 
    public:
-    Entity(int x0, int y0, Face face0);
+    Entity(size_t x0, size_t y0, Direction face0);
     ~Entity();
 
     void info() const;
-    int getx() const;
-    int gety() const;
+    size_t getx() const;
+    size_t gety() const;
     void move(int step);
-    int probex(int step = 1, Direction direction = Direction::forward) const;
-    int probey(int step = 1, Direction direction = Direction::forward) const;
-    // int probey(int step = 1) const;
-    Face getFace() const;
+    int probex(Direction direction, int step = 1) const;
+    int probey(Direction direction, int step = 1) const;
+    Direction getFace() const;
     void turn(Direction direction);
     bool inField(int step = 1) const;
 };
 
 class Bullet : public Entity {
    private:
-    int id;
+    size_t id;
 
    public:
-    Bullet(int x0, int y0, Face face0, int id);
+    Bullet(size_t x0, size_t y0, Direction face0, size_t id);
     ~Bullet();
-    int getid() const;
+    size_t getid() const;
 };
 
 class Tank : public Entity {
    private:
-    int hp, id;
-    static int ID;
+    int hp;
+    size_t id;
+    static size_t ID;
 
    public:
-    Tank(int x0, int y0, Face face0, int hp0);
+    Tank(size_t x0, size_t y0, Direction face0, int hp0);
     ~Tank();
     void deduct(int dhp);
     int gethp() const;
-    int getid() const;
+    size_t getid() const;
     Bullet* shot();
 };
 
 using Game = struct _Game {
     Field field;
-    int round = 1;
+    size_t round = 1;
     std::vector<Tank*> Tanks_p;
     std::vector<Bullet*> Bullets_p;
 };
@@ -75,10 +73,10 @@ void shot_all(const std::vector<Tank*>& Tanks_p,
 bool check_collision(std::vector<Tank*>& Tanks_p,
                      std::vector<Bullet*>& Bullets_p, std::ofstream& fout);
 
-bool check_gas(const std::vector<Tank*>& Tanks_p, int round,
+bool check_gas(const std::vector<Tank*>& Tanks_p, size_t round,
                std::ofstream& fout);
 
-std::vector<Tank*> init_Tanks(int initialHP = 5, int num = TANK_NUM);
+std::vector<Tank*> init_Tanks(int initialHP = 5, size_t num = TANK_NUM);
 
 void tank_info(const std::vector<Tank*>& Tanks_p, std::ofstream& fout);
 

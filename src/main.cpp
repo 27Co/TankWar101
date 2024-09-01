@@ -1,3 +1,6 @@
+#include <iostream>
+
+#include "Field.h"
 #include "terminal.h"
 
 int main(int argc, char* argv[]) {
@@ -29,16 +32,17 @@ int main(int argc, char* argv[]) {
     init_field(game.field);
     game.Tanks_p = init_Tanks(initialHP);
     std::cout << std::endl << "TankWar started ";
-    std::cout << "(Game mode: " << modeName[mode] << ", ";
+    std::cout << "(Game mode: " << modeName[static_cast<size_t>(mode)] << ", ";
     std::cout << "Initial hp: " << initialHP << ")" << std::endl;
     fout << "TankWar started ";
-    fout << "(Game mode: " << modeName[mode] << ", ";
+    fout << "(Game mode: " << modeName[static_cast<size_t>(mode)] << ", ";
     fout << "Initial hp: " << initialHP << ")" << std::endl;
 
     int status;
     while ((status = loop(game, fout, mode)) == 0);
 
     if (status == 1) {
+        clear_screen();
         IDs winnerID = get_winnerID(game.Tanks_p);
         fout << "get_winnerID done" << std::endl;
         IDs OopsID = get_OopsID(game.Tanks_p, winnerID);
@@ -59,8 +63,8 @@ int main(int argc, char* argv[]) {
     fout << "tanks deleted" << std::endl;
     fout.close();
     std::cout << "Done. See you next time!" << std::endl;
-    std::cout << "Exit in 3 second" << std::flush;
-    std::this_thread::sleep_for(std::chrono::seconds(3));
+    std::cout << "Press any key to quit" << std::flush;
+    status = getchar();
 
     tcsetattr(STDIN_FILENO, TCSANOW, &tty);
     restore_buffer();

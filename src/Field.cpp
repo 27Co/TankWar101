@@ -1,5 +1,9 @@
 #include "Field.h"
 
+#include <algorithm>
+#include <iomanip>
+#include <iostream>
+
 /**
  * @brief: initialize the field to Empty
  * @param field: field to be initialize
@@ -15,10 +19,10 @@ void init_field(Field& field) {
  * @param round: current round number
  */
 void update_field(Field& field, const EntityStatus& tanksXYZ,
-                  const EntityStatus& bulletsXYZ, int round) {
-    int gasWidth = INITIAL_GAS_WIDTH + round / SHRINK_RATE;
-    for (int x = 0; x < FIELD_SIZE_DISPLAY; x++) {
-        for (int y = 0; y < FIELD_SIZE_DISPLAY; y++) {
+                  const EntityStatus& bulletsXYZ, size_t round) {
+    size_t gasWidth = INITIAL_GAS_WIDTH + round / SHRINK_RATE;
+    for (size_t x = 0; x < FIELD_SIZE_DISPLAY; x++) {
+        for (size_t y = 0; y < FIELD_SIZE_DISPLAY; y++) {
             if (x >= gasWidth && x < FIELD_SIZE_DISPLAY - gasWidth &&
                 y >= gasWidth && y < FIELD_SIZE_DISPLAY - gasWidth) {
                 field[x][y] = Object::Empty;
@@ -45,17 +49,17 @@ void update_field(Field& field, const EntityStatus& tanksXYZ,
 void print_field(Field& field, const EntityStatus& BulletsXYZ,
                  const EntityStatus& TanksXYZ, IDs OopsID) {
     std::cout << std::endl << "  ";
-    for (int y = 0; y < FIELD_SIZE_DISPLAY; y++) {
+    for (size_t y = 0; y < FIELD_SIZE_DISPLAY; y++) {
         std::cout << std::setw(2) << static_cast<char>(y + 'a');
     }
     std::cout << std::endl;
-    for (int x = 0; x < FIELD_SIZE_DISPLAY; x++) {
+    for (size_t x = 0; x < FIELD_SIZE_DISPLAY; x++) {
         std::cout << std::setw(2) << x;
-        for (int y = 0; y < FIELD_SIZE_DISPLAY; y++) {
+        for (size_t y = 0; y < FIELD_SIZE_DISPLAY; y++) {
             std::cout << " ";
             colorTank(field, x, y, TanksXYZ, OopsID);
             colorBullet(x, y, BulletsXYZ);
-            std::cout << icons[static_cast<int>(field[x][y])] << NOCOLOR;
+            std::cout << icons[static_cast<size_t>(field[x][y])] << NOCOLOR;
         }
         std::cout << " " << std::endl;
     }
@@ -68,7 +72,7 @@ void print_field(Field& field, const EntityStatus& BulletsXYZ,
  * @param tanksXYZ: tank positions
  * @param OopsID: ids of those who didn't win
  */
-void colorTank(Field& field, int x, int y, const EntityStatus& TanksXYZ,
+void colorTank(Field& field, size_t x, size_t y, const EntityStatus& TanksXYZ,
                IDs OopsID) {
     for (auto tankXYZ : TanksXYZ) {
         if (x == tankXYZ[0] && y == tankXYZ[1]) {
@@ -100,7 +104,7 @@ void colorTank(Field& field, int x, int y, const EntityStatus& TanksXYZ,
 /**
  * @brief: color the bullets
  */
-void colorBullet(int x, int y, const EntityStatus& BulletXYZ) {
+void colorBullet(size_t x, size_t y, const EntityStatus& BulletXYZ) {
     for (auto bulletXYZ : BulletXYZ) {
         if (x == bulletXYZ[0] && y == bulletXYZ[1]) {
             std::cout << bulletColors[bulletXYZ[3] - 1];

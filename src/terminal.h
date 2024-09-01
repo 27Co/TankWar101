@@ -7,15 +7,9 @@
 
 #include <cstring>
 #include <fstream>
-#include <iostream>
-#include <limits>
 #include <string>
-#include <vector>
 
-#include "AI.h"
 #include "Entity.h"
-#include "Field.h"
-#include "Global.h"
 
 const std::array<std::string, 3> modeName = {{"PVP", "PVE", "DEMO"}};
 

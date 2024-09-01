@@ -2,17 +2,15 @@
 #define GLOBAL_H
 
 #include <array>
-#include <chrono>
 #include <string>
-#include <thread>
 #include <vector>
 
 // the first two parameters should differ by a multiply of two
-constexpr int FIELD_SIZE_DISPLAY = 26;  // size of the whole field
-constexpr int INITIAL_SAFE_ZONE = 20;   // size of initial safe zone (no gas)
-constexpr int SHRINK_RATE = 16;   // rounds number for safeZone to shrink once
-constexpr int TANK_NUM = 2;       // number of tanks
-constexpr int SHOT_INTERVAL = 3;  // number of rounds between two shots
+constexpr size_t FIELD_SIZE_DISPLAY = 26;  // size of the whole field
+constexpr size_t INITIAL_SAFE_ZONE = 20;   // size of initial safe zone (no gas)
+constexpr size_t SHRINK_RATE = 16;  // rounds number for safeZone to shrink once
+constexpr size_t TANK_NUM = 2;      // number of tanks
+constexpr size_t SHOT_INTERVAL = 3;  // number of rounds between two shots
 
 #define INITIAL_GAS_WIDTH (FIELD_SIZE_DISPLAY - INITIAL_SAFE_ZONE) / 2
 
@@ -33,17 +31,17 @@ const std::array<std::string, 5> tankColors = {
 
 const std::array<std::string, 4> bulletColors = {{BLUE, YELLOW, BRED, CYAN}};
 
-enum class Face { down, right, up, left };
+enum class Direction { down, right, up, left, none };
 
-const std::array<std::string, 4> faceName = {"down", "right", "up", "left"};
-
-enum class Direction { t_right, forward, t_left };
+const std::array<std::string, 5> dirName = {"down", "right", "up", "left",
+                                            "none"};
 
 using Object = enum class _object {
     Down,
     Right,
     Up,
     Left,
+    None,
     Bulletn,
     Gas,
     Empty
@@ -52,8 +50,8 @@ using Object = enum class _object {
 using Field =
     std::array<std::array<Object, FIELD_SIZE_DISPLAY>, FIELD_SIZE_DISPLAY>;
 
-using EntityStatus = std::vector<std::array<int, 4>>;
+using EntityStatus = std::vector<std::array<size_t, 4>>;
 
-using IDs = std::array<int, TANK_NUM>;
+using IDs = std::array<size_t, TANK_NUM>;
 
 #endif  // GLOBAL_H

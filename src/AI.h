@@ -5,17 +5,13 @@
 #include <time.h>
 
 #include <cstdlib>
-#include <iostream>
-#include <vector>
 
 #include "Entity.h"
 #include "Global.h"
 
-const std::array<Direction, 3> directions_d = {
-    {Direction::t_right, Direction::forward, Direction::t_left}};
-
-const std::array<Direction, 3> directions_check = {
-    {Direction::forward, Direction::t_left, Direction::t_right}};
+const std::array<Direction, 5> directions = {{Direction::down, Direction::right,
+                                              Direction::up, Direction::left,
+                                              Direction::none}};
 
 Direction oneAI(const Game& game, size_t which, bool aggressive = true);
 

@@ -1,8 +1,14 @@
 #include "terminal.h"
 
-/**
- * @brief: handle command line arguments
- */
+#include <chrono>
+#include <iostream>
+#include <thread>
+#include <vector>
+
+#include "AI.h"
+#include "Field.h"
+
+// @brief: handle command line arguments
 int set_opts(int& mode, std::string& fileName, int argc, char** argv) {
     int opt;
     while ((opt = getopt_long(argc, argv, "hl:m:", longOptions, nullptr)) !=
@@ -64,7 +70,7 @@ void print_help(const std::string& arg0) {
     std::cout << "      Log the game process to a file. (Default: tankwar.log)"
               << std::endl;
     std::cout << "-m <mode> | --mode=<mode>" << std::endl;
-    std::cout << "      Specify the game mode (PVP/PVE/DEMO). (Default: PVP)"
+    std::cout << "      Specify the game mode (PVE/DEMO). (Default: PVE)"
               << std::endl;
     std::cout << "-p <point> | --initial-life=<point>" << std::endl;
     std::cout
@@ -102,8 +108,8 @@ int print_intro(bool isDEMO) {
  * @brief: main loop of the game
  * @param game: ongoing game
  * @param fout: handler of the log file
- * @param mode: game mode (0 for PVP, 1 for PVE, 2 for DEMO)
- * @return 0 if the game continues; 1 if the game ends; -1 if players quit
+ * @param mode: game mode (0 for PVE, 1 for DEMO)
+ * @return: 0 if the game continues; 1 if the game ends
  */
 int loop(Game& game, std::ofstream& fout, int mode) {
     clear_screen();
@@ -145,31 +151,46 @@ int loop(Game& game, std::ofstream& fout, int mode) {
     return 0;
 }
 
+/**
+ * @brief: read direction from input
+ * @return: direction
+ */
 Direction get_direction() {
     int dir = getchar();
     switch (dir) {
         case 'w':
-            return Direction::forward;
+            return Direction::up;
         case 'a':
-            return Direction::t_left;
+            return Direction::left;
         case 'd':
-            return Direction::t_right;
+            return Direction::right;
+        case 's':
+            return Direction::down;
         default:
-            return Direction::forward;
+            return Direction::none;
     }
 }
 
+/**
+ * @brief: turn tanks
+ * @param game: ongoing game
+ * @param mode: game mode (0 for PVE, 1 for DEMO)
+ */
 void turn_tanks(Game& game, int mode) {
     if (mode == 0) {
         game.Tanks_p[0]->turn(get_direction());
-    } else {
+    } else if (mode == 1) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
         game.Tanks_p[0]->turn(oneAI(game, 0, false));
     }
     game.Tanks_p[1]->turn(oneAI(game, 1, true));
 }
 
+//@brief: open a new buffer
 void new_buffer() { std::cout << "\033[?1049h" << std::flush; }
 
+//@brief: restore the original buffer
 void restore_buffer() { std::cout << "\033[?1049l" << std::flush; }
 
+//@brief: clear the screen and move the cursor to the top left corner
 void clear_screen() { std::cout << "\033[2J\033[1;1H" << std::flush; }
