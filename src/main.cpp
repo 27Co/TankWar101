@@ -13,8 +13,15 @@ int main(int argc, char* argv[]) {
 
     new_buffer();
     clear_screen();
+    struct termios tty, ttyTmp;
+    tcgetattr(STDIN_FILENO, &tty);
+    ttyTmp = tty;
+    ttyTmp.c_lflag &= static_cast<unsigned int>(~(ICANON | ECHO));
+    tcsetattr(STDIN_FILENO, TCSANOW, &ttyTmp);
+
     if (print_intro(mode == 2) == 1) {
-        std::cout << "\033[?1049l" << std::flush;
+        restore_buffer();
+        tcsetattr(STDIN_FILENO, TCSANOW, &tty);
         return 0;
     }
 
@@ -54,6 +61,8 @@ int main(int argc, char* argv[]) {
     std::cout << "Done. See you next time!" << std::endl;
     std::cout << "Exit in 3 second" << std::flush;
     std::this_thread::sleep_for(std::chrono::seconds(3));
+
+    tcsetattr(STDIN_FILENO, TCSANOW, &tty);
     restore_buffer();
 
     return 0;

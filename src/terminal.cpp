@@ -120,12 +120,7 @@ int loop(Game& game, std::ofstream& fout, int mode) {
     tank_info(game.Tanks_p, fout);
     std::cout << std::endl;
 
-    std::string directions = get_directions(game, mode);
-    fout << "Input directions: " << directions << std::endl;
-
-    if (turn_all(game, directions, fout) != 0) {
-        return -1;
-    }
+    turn_tanks(game, mode);
 
     if (game.round % 3 == 1) {
         shot_all(game.Tanks_p, game.Bullets_p);
@@ -151,83 +146,27 @@ int loop(Game& game, std::ofstream& fout, int mode) {
     return 0;
 }
 
-/**
- * @brief: get the input directions from cin or AI
- * @param game: ongoing game
- * @param mode: game mode (0 for PVP, 1 for PVE, 2 for DEMO)
- * @return: the input directions
- */
-std::string get_directions(Game game, int mode) {
-    std::string directions = "ss";
-    switch (mode) {
-        case 0:
-            for (int i = 0; i < TANK_NUM; i++) {
-                std::cout << "Enter a direction for " << tankColors[i]
-                          << "tank " << game.Tanks_p[i]->getid() << NOCOLOR
-                          << std::endl;
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(),
-                                '\n');
-                std::cin >> directions[i];
-            }
-            break;
-        case 1:
-            std::cout << "Enter a direction for Your " << tankColors[0]
-                      << "tank" << NOCOLOR << std::endl;
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cin >> directions[0];
-            directions[1] = oneAI(game, 1);
-            std::cout << "AI's choice: " << std::endl
-                      << directions[1] << std::endl;
-            break;
-        case 2:
-            for (int i = 0; i < TANK_NUM; i++) {
-                std::cout << "Enter a direction for " << tankColors[i]
-                          << "tank " << game.Tanks_p[i]->getid() << NOCOLOR
-                          << std::endl;
-                directions[i] = oneAI(game, i, i % 2 == 0);
-                std::cout << directions[i] << std::endl;
-            }
-            break;
+Direction get_direction() {
+    int dir = getchar();
+    switch (dir) {
+        case 'w':
+            return Direction::forward;
+        case 'a':
+            return Direction::t_left;
+        case 'd':
+            return Direction::t_right;
         default:
-            break;
+            return Direction::forward;
     }
-    return directions;
 }
 
-/**
- * @brief: turn the tanks according to directions
- * @param game: ongoing game
- * @param directions: directions to turn
- * @param fout: handler of the log file
- * @return: the input directions
- */
-int turn_all(Game game, std::string directions, std::ofstream& fout) {
-    for (int i = 0; i < TANK_NUM; i++) {
-        switch (directions[i]) {
-            case 'a':
-                game.Tanks_p[i]->Entity::turn(Direction::t_left);
-                fout << "Tank " << game.Tanks_p[1]->getid() << " turned left"
-                     << std::endl;
-                break;
-            case 'w':
-                game.Tanks_p[i]->Entity::turn(Direction::forward);
-                fout << "Tank " << game.Tanks_p[1]->getid() << " didn't turn"
-                     << std::endl;
-                break;
-            case 'd':
-                game.Tanks_p[i]->Entity::turn(Direction::t_right);
-                fout << "Tank " << game.Tanks_p[1]->getid() << " turned right"
-                     << std::endl;
-                break;
-            case 'q':
-                fout << "Player exited the game" << std::endl;
-                return -1;
-
-            default:
-                break;
-        }
+void turn_tanks(Game& game, int mode) {
+    if (mode == 0) {
+        game.Tanks_p[0]->turn(get_direction());
+    } else {
+        game.Tanks_p[0]->turn(oneAI(game, 0, false));
     }
-    return 0;
+    game.Tanks_p[1]->turn(oneAI(game, 1, true));
 }
 
 void new_buffer() { std::cout << "\033[?1049h" << std::flush; }

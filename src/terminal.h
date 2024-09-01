@@ -2,6 +2,8 @@
 #define TERMINAL_H
 
 #include <getopt.h>
+#include <termios.h>
+#include <unistd.h>
 
 #include <cstring>
 #include <fstream>
@@ -34,9 +36,9 @@ int print_intro(bool isDEMO = false);
 
 int loop(Game& game, std::ofstream& fout, int mode);
 
-std::string get_directions(Game game, int mode);
+Direction get_direction();
 
-int turn_all(Game game, std::string directions, std::ofstream& fout);
+void turn_tanks(Game& game, int mode);
 
 void new_buffer();
 void restore_buffer();

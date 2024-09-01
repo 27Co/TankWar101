@@ -2,7 +2,9 @@
 #define GLOBAL_H
 
 #include <array>
+#include <chrono>
 #include <string>
+#include <thread>
 #include <vector>
 
 // the first two parameters should differ by a multiply of two

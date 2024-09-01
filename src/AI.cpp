@@ -6,12 +6,10 @@
  * @param which: which tank to control
  * @param aggressive: whether AI is in aggressive mode
  */
-char oneAI(const Game& game, int which, bool aggressive) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(800));
-
-    if (which < 0 || which >= TANK_NUM) {
+Direction oneAI(const Game& game, size_t which, bool aggressive) {
+    if (which >= TANK_NUM) {
         std::cout << "Error calling oneAI: index out of range" << std::endl;
-        return 'e';
+        return Direction::forward;
     }
 
     // tiles that bullets can reach in the next round
@@ -45,7 +43,7 @@ char oneAI(const Game& game, int which, bool aggressive) {
 
     if (!aggressive && safeDirections.size() > 0) {
         std::srand(static_cast<unsigned int>(time(nullptr)));
-        return directions_char[static_cast<int>(
+        return directions_d[static_cast<size_t>(
             safeDirections[std::rand() % safeDirections.size()])];
     }
 
@@ -67,6 +65,5 @@ char oneAI(const Game& game, int which, bool aggressive) {
             distance2 = newDistance2;
         }
     }
-    return directions_char[static_cast<int>(enemyDirection)];
+    return directions_d[static_cast<size_t>(enemyDirection)];
 }
-
