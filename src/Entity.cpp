@@ -228,6 +228,9 @@ bool check_collision(std::vector<Tank*>& Tanks_p,
     }
     for (auto& bullet_p : Bullets_p) {
         for (auto tank_p : Tanks_p) {
+            if (bullet_p->getid() == tank_p->getid()) {
+                continue;
+            }
             bool oneStep_b = bullet_p->Entity::probex(bullet_p->getFace()) ==
                                  static_cast<int>(tank_p->Entity::getx()) &&
                              bullet_p->Entity::probey(bullet_p->getFace()) ==
@@ -343,33 +346,33 @@ void tank_info(const std::vector<Tank*>& Tanks_p, std::ofstream& fout) {
 /**
  * @brief: get the status of the entity (tank)
  * @param Entities_p: vector containing pointers to entites (tanks)
- * @return: a vector containing (x, y) coordinates
+ * @return: a vector containing a set of (x, y, face, id)
  */
-EntityStatus get_XYZ(const std::vector<Tank*>& Entities_p) {
-    EntityStatus XYZ;
+EntityStatus get_XYFI(const std::vector<Tank*>& Entities_p) {
+    EntityStatus XYFI;
     for (auto p : Entities_p) {
-        std::array<size_t, 4> tempXYZ = {{p->getx(), p->gety(),
-                                          static_cast<size_t>(p->getFace()),
-                                          static_cast<size_t>(p->getid())}};
-        XYZ.push_back(tempXYZ);
+        std::array<size_t, 4> xyfi = {{p->getx(), p->gety(),
+                                       static_cast<size_t>(p->getFace()),
+                                       static_cast<size_t>(p->getid())}};
+        XYFI.push_back(xyfi);
     }
-    return XYZ;
+    return XYFI;
 }
 
 /**
  * @brief: get the status of the entity (bullet)
  * @param Entities_p: vector containing pointers to entites (bullets)
- * @return: a vector containing (x, y) coordinates
+ * @return: a vector containing a set of (x, y, face, id)
  */
-EntityStatus get_XYZ(const std::vector<Bullet*>& Entities_p) {
-    EntityStatus XYZ;
+EntityStatus get_XYFI(const std::vector<Bullet*>& Entities_p) {
+    EntityStatus XYFI;
     for (auto p : Entities_p) {
-        std::array<size_t, 4> tempXYZ = {{p->getx(), p->gety(),
-                                          static_cast<size_t>(p->getFace()),
-                                          static_cast<size_t>(p->getid())}};
-        XYZ.push_back(tempXYZ);
+        std::array<size_t, 4> xyfi = {{p->getx(), p->gety(),
+                                       static_cast<size_t>(p->getFace()),
+                                       static_cast<size_t>(p->getid())}};
+        XYFI.push_back(xyfi);
     }
-    return XYZ;
+    return XYFI;
 }
 
 /**

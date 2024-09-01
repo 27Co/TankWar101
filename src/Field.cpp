@@ -14,12 +14,12 @@ void init_field(Field& field) {
 
 /**
  * @brief: update the field with tanks and bullets
- * @param tanksXYZ: vector containing (x, y) coordinates of tanks
- * @param bulletsXYZ: vector containing (x, y) coordinates of bullets
+ * @param tanksXYFI: vector containing info of tanks
+ * @param bulletsXYFI: vector containing info of bullets
  * @param round: current round number
  */
-void update_field(Field& field, const EntityStatus& tanksXYZ,
-                  const EntityStatus& bulletsXYZ, size_t round) {
+void update_field(Field& field, const EntityStatus& tanksXYFI,
+                  const EntityStatus& bulletsXYFI, size_t round) {
     size_t gasWidth = INITIAL_GAS_WIDTH + round / SHRINK_RATE;
     for (size_t x = 0; x < FIELD_SIZE_DISPLAY; x++) {
         for (size_t y = 0; y < FIELD_SIZE_DISPLAY; y++) {
@@ -32,22 +32,22 @@ void update_field(Field& field, const EntityStatus& tanksXYZ,
         }
     }
 
-    for (auto xyz : tanksXYZ) {
-        field[xyz[0]][xyz[1]] = static_cast<Object>(xyz[2]);
-    }
-    for (auto xyz : bulletsXYZ) {
+    for (auto xyz : bulletsXYFI) {
         field[xyz[0]][xyz[1]] = Object::Bulletn;
+    }
+    for (auto xyz : tanksXYFI) {
+        field[xyz[0]][xyz[1]] = static_cast<Object>(xyz[2]);
     }
 }
 
 /**
  * @brief: print the field
  * @param field: field to be printed
- * @param tanksXYZ: a vector containing (x, y) coordinates of tanks
+ * @param tanksXYFI: a vector containing info of tanks
  * @param OopsID: ids of those who didn't win
  */
-void print_field(Field& field, const EntityStatus& BulletsXYZ,
-                 const EntityStatus& TanksXYZ, IDs OopsID) {
+void print_field(Field& field, const EntityStatus& BulletsXYFI,
+                 const EntityStatus& TanksXYFI, IDs OopsID) {
     std::cout << std::endl << "  ";
     for (size_t y = 0; y < FIELD_SIZE_DISPLAY; y++) {
         std::cout << std::setw(2) << static_cast<char>(y + 'a');
@@ -57,8 +57,8 @@ void print_field(Field& field, const EntityStatus& BulletsXYZ,
         std::cout << std::setw(2) << x;
         for (size_t y = 0; y < FIELD_SIZE_DISPLAY; y++) {
             std::cout << " ";
-            colorTank(field, x, y, TanksXYZ, OopsID);
-            colorBullet(x, y, BulletsXYZ);
+            colorTank(field, x, y, TanksXYFI, OopsID);
+            colorBullet(x, y, BulletsXYFI);
             std::cout << icons[static_cast<size_t>(field[x][y])] << NOCOLOR;
         }
         std::cout << " " << std::endl;

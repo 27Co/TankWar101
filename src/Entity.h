@@ -80,9 +80,9 @@ std::vector<Tank*> init_Tanks(int initialHP = 5, size_t num = TANK_NUM);
 
 void tank_info(const std::vector<Tank*>& Tanks_p, std::ofstream& fout);
 
-EntityStatus get_XYZ(const std::vector<Tank*>& Entities_p);
+EntityStatus get_XYFI(const std::vector<Tank*>& Entities_p);
 
-EntityStatus get_XYZ(const std::vector<Bullet*>& Entities_p);
+EntityStatus get_XYFI(const std::vector<Bullet*>& Entities_p);
 
 IDs get_winnerID(const std::vector<Tank*>& Tanks_p);
 

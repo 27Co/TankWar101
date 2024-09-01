@@ -47,8 +47,8 @@ int main(int argc, char* argv[]) {
         fout << "get_winnerID done" << std::endl;
         IDs OopsID = get_OopsID(game.Tanks_p, winnerID);
         fout << "get_OopsID done" << std::endl;
-        print_field(game.field, get_XYZ(game.Bullets_p), get_XYZ(game.Tanks_p),
-                    OopsID);
+        print_field(game.field, get_XYFI(game.Bullets_p),
+                    get_XYFI(game.Tanks_p), OopsID);
         fout << "endgame field printed" << std::endl;
         print_winner(winnerID, mode);
         fout << "winners announced" << std::endl;

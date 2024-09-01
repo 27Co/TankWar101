@@ -116,11 +116,11 @@ int loop(Game& game, std::ofstream& fout, int mode) {
     std::cout << "Round " << game.round << std::endl;
     fout << "Round " << game.round << std::endl;
 
-    update_field(game.field, get_XYZ(game.Tanks_p), get_XYZ(game.Bullets_p),
+    update_field(game.field, get_XYFI(game.Tanks_p), get_XYFI(game.Bullets_p),
                  game.round);
     fout << "Field updated" << std::endl;
 
-    print_field(game.field, get_XYZ(game.Bullets_p), get_XYZ(game.Tanks_p));
+    print_field(game.field, get_XYFI(game.Bullets_p), get_XYFI(game.Tanks_p));
     fout << "Field printed" << std::endl;
     tank_info(game.Tanks_p, fout);
     std::cout << std::endl;
@@ -136,8 +136,8 @@ int loop(Game& game, std::ofstream& fout, int mode) {
     if (check_collision(game.Tanks_p, game.Bullets_p, fout) ||
         check_gas(game.Tanks_p, game.round, fout)) {
         move_all(game.Tanks_p, game.Bullets_p);
-        update_field(game.field, get_XYZ(game.Tanks_p), get_XYZ(game.Bullets_p),
-                     game.round);
+        update_field(game.field, get_XYFI(game.Tanks_p),
+                     get_XYFI(game.Bullets_p), game.round);
         fout << "Game ends" << std::endl;
         return 1;
     }
