@@ -64,7 +64,7 @@ int main(int argc, char* argv[]) {
     fout.close();
     std::cout << "Done. See you next time!" << std::endl;
     std::cout << "Press any key to quit" << std::flush;
-    status = getchar();
+    get_key();
 
     tcsetattr(STDIN_FILENO, TCSANOW, &tty);
     restore_buffer();

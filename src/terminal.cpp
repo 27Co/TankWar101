@@ -83,16 +83,16 @@ void print_help(const std::string& arg0) {
  */
 int print_intro() {
     std::cout << "Tank control:" << std::endl;
-    std::cout << "Use w, a, s, d or arrow keys to control the tank."
+    std::cout << "Use 'w', 'a', 's', 'd' or Arrow Keys to control the tank."
               << std::endl;
-    std::cout << "Press space to stay where you are for this round."
+    std::cout << "Press <Space> to stay where you are for this round."
               << std::endl;
     std::cout << "Any other input will be treated as space." << std::endl;
 
-    int temp;
     std::cout << std::endl;
-    std::cout << "Enter q to quit, any other character to continue: ";
-    if ((temp = getchar()) == 'q') {
+    std::cout << "Press <Esc> to quit, any other key to continue: "
+              << std::flush;
+    if (get_key() == escapeKey) {
         return 1;
     }
     return 0;
@@ -150,25 +150,17 @@ int loop(Game& game, std::ofstream& fout, int mode) {
  * @return: direction
  */
 Direction get_direction() {
-    int dir = getchar();
-    if (dir == 27 && getchar() == 91) {
-        dir = getchar();
-    }
-    switch (dir) {
-        case 65:
-        case 'w':
-            return Direction::up;
-        case 66:
-        case 's':
-            return Direction::down;
-        case 67:
-        case 'd':
-            return Direction::right;
-        case 68:
-        case 'a':
-            return Direction::left;
-        default:
-            return Direction::none;
+    std::vector<char> key = get_key();
+    if (key == wKey || key == upKey) {
+        return Direction::up;
+    } else if (key == sKey || key == downKey) {
+        return Direction::down;
+    } else if (key == dKey || key == rightKey) {
+        return Direction::right;
+    } else if (key == aKey || key == leftKey) {
+        return Direction::left;
+    } else {
+        return Direction::none;
     }
 }
 
@@ -187,11 +179,32 @@ void turn_tanks(Game& game, int mode) {
     game.Tanks_p[1]->turn(oneAI(game, 1, true));
 }
 
-//@brief: open a new buffer
+// @brief: open a new buffer
 void new_buffer() { std::cout << "\033[?1049h" << std::flush; }
 
-//@brief: restore the original buffer
+// @brief: restore the original buffer
 void restore_buffer() { std::cout << "\033[?1049l" << std::flush; }
 
-//@brief: clear the screen and move the cursor to the top left corner
+// @brief: clear the screen and move the cursor to the top left corner
 void clear_screen() { std::cout << "\033[2J\033[1;1H" << std::flush; }
+
+// @brief: clear the input buffer
+void clear_buff() { tcflush(STDIN_FILENO, TCIFLUSH); }
+
+// @brief: read key from terminal
+std::vector<char> get_key() {
+    const std::streamsize keySize = 6;
+    std::array<char, keySize> buffer = {{0}};
+    long n = read(STDIN_FILENO, buffer.data(), keySize);
+    if (n < 0) {
+        std::cerr << "Failed to read input" << std::endl;
+        return {};
+    }
+    std::vector<char> sequence;
+    std::cout << "Successfully read " << n << " byte(s)" << std::endl;
+    for (size_t i = 0; i < static_cast<size_t>(n); i++) {
+        sequence.push_back(buffer[i]);
+    }
+    clear_buff();
+    return sequence;
+}

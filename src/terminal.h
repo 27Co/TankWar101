@@ -13,6 +13,16 @@
 
 const std::array<std::string, 3> modeName = {{"PVP", "PVE", "DEMO"}};
 
+const std::vector<char> escapeKey = {27};
+const std::vector<char> wKey = {'w'};
+const std::vector<char> sKey = {'s'};
+const std::vector<char> dKey = {'d'};
+const std::vector<char> aKey = {'a'};
+const std::vector<char> upKey = {27, 91, 65};
+const std::vector<char> downKey = {27, 91, 66};
+const std::vector<char> rightKey = {27, 91, 67};
+const std::vector<char> leftKey = {27, 91, 68};
+
 extern "C" {
 const struct option longOptions[] = {
     {"help", no_argument, nullptr, 'h'},
@@ -37,5 +47,8 @@ void turn_tanks(Game& game, int mode);
 void new_buffer();
 void restore_buffer();
 void clear_screen();
+void clear_buff();
+
+std::vector<char> get_key();
 
 #endif  // TERMINAL_H
