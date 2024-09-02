@@ -81,19 +81,13 @@ void print_help(const std::string& arg0) {
 /**
  * @brief: print the introduction of the game
  */
-int print_intro(bool isDEMO) {
-    if (isDEMO) {
-        std::cout << std::endl
-                  << "AIs will NOT keep moving forward. Just wait and see :)"
-                  << std::endl;
-    } else {
-        std::cout << "Tank control:" << std::endl;
-        std::cout << "In each turn, a tank can move left (a), right "
-                     "(d) or forward (w)"
-                  << std::endl;
-        std::cout << "Any other input will be treated as w (forward)"
-                  << std::endl;
-    }
+int print_intro() {
+    std::cout << "Tank control:" << std::endl;
+    std::cout << "Use w, a, s, d or arrow keys to control the tank."
+              << std::endl;
+    std::cout << "Press space to stay where you are for this round."
+              << std::endl;
+    std::cout << "Any other input will be treated as space." << std::endl;
 
     int temp;
     std::cout << std::endl;
@@ -157,15 +151,22 @@ int loop(Game& game, std::ofstream& fout, int mode) {
  */
 Direction get_direction() {
     int dir = getchar();
+    if (dir == 27 && getchar() == 91) {
+        dir = getchar();
+    }
     switch (dir) {
+        case 65:
         case 'w':
             return Direction::up;
-        case 'a':
-            return Direction::left;
-        case 'd':
-            return Direction::right;
+        case 66:
         case 's':
             return Direction::down;
+        case 67:
+        case 'd':
+            return Direction::right;
+        case 68:
+        case 'a':
+            return Direction::left;
         default:
             return Direction::none;
     }

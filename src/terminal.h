@@ -26,7 +26,7 @@ int set_opts(int& mode, std::string& fileName, int argc, char** argv);
 
 void print_help(const std::string& argv);
 
-int print_intro(bool isDEMO = false);
+int print_intro();
 
 int loop(Game& game, std::ofstream& fout, int mode);
 

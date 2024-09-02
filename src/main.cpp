@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
     ttyTmp.c_lflag &= static_cast<unsigned int>(~(ICANON | ECHO));
     tcsetattr(STDIN_FILENO, TCSANOW, &ttyTmp);
 
-    if (print_intro(mode == 2) == 1) {
+    if (print_intro() == 1) {
         restore_buffer();
         tcsetattr(STDIN_FILENO, TCSANOW, &tty);
         return 0;
